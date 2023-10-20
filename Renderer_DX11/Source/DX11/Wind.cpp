@@ -1,11 +1,16 @@
 #include "../../Headers/DX11_Base.h"
 #include "../../resource.h"
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 Window::WindowClass Window::WindowClass::S_wndClass = Window::WindowClass();
 const wchar_t* Window::WindowClass::S_wndClassName = L"D3X11_Renderer";
+unsigned short Window::S_WindowWidth;
+unsigned short Window::S_WindowHeight;
 HWND Window::S_hWnd = nullptr;
+Window::CreateWindowParams Window::S_CreateWindowParams = {-1};
+
 
 Window::WindowClass::WindowClass() noexcept : m_hInst(GetModuleHandle(nullptr))
 {
@@ -34,6 +39,9 @@ Window::WindowClass::~WindowClass() noexcept
 Window::Window(unsigned int width, unsigned int height, const wchar_t* windowName) noexcept{
 	if (S_hWnd != nullptr) return;
 
+	S_WindowWidth = width;
+	S_WindowHeight = height;
+
 	//should to use for correct window size
 	RECT rect;
 	rect.left = 100;
@@ -53,10 +61,14 @@ Window::Window(unsigned int width, unsigned int height, const wchar_t* windowNam
 	ERROR_IF(S_hWnd == nullptr, L"NULL POINTER");
 	ShowWindow(S_hWnd, SW_SHOWDEFAULT);
 	UpdateWindow(S_hWnd);
+
+	ImGui_ImplWin32_Init(S_hWnd);
 }
 Window::~Window() noexcept
 {
+	ImGui_ImplWin32_Shutdown();
 	DestroyWindow(S_hWnd);
+	S_hWnd = nullptr;
 }
 
 void Window::SetWindowTitle(const std::wstring& title) noexcept {
@@ -74,6 +86,9 @@ std::optional<int> Window::ProcessMsg() noexcept {
 }
 
 LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+		return true;
+
 	switch (msg) {
 	case WM_CLOSE:
 		PostQuitMessage(0);

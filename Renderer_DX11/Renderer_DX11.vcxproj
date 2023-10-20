@@ -131,13 +131,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="imGUI\imgui.cpp" />
+    <ClCompile Include="imGUI\imgui_demo.cpp" />
+    <ClCompile Include="imGUI\imgui_draw.cpp" />
+    <ClCompile Include="imGUI\imgui_impl_dx11.cpp" />
+    <ClCompile Include="imGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="imGUI\imgui_tables.cpp" />
+    <ClCompile Include="imGUI\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Source\DX11\Graphics.cpp" />
+    <ClCompile Include="Source\DX11\ImGUIManager.cpp" />
     <ClCompile Include="Source\DX11\Wind.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Headers\DX11_Base.h" />
     <ClInclude Include="Headers\DX11_ErrorMacro.h" />
+    <ClInclude Include="imGUI\imconfig.h" />
+    <ClInclude Include="imGUI\imgui.h" />
+    <ClInclude Include="imGUI\imgui_impl_dx11.h" />
+    <ClInclude Include="imGUI\imgui_impl_win32.h" />
+    <ClInclude Include="imGUI\imgui_internal.h" />
+    <ClInclude Include="imGUI\imstb_rectpack.h" />
+    <ClInclude Include="imGUI\imstb_textedit.h" />
+    <ClInclude Include="imGUI\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
