@@ -4,7 +4,7 @@
 #pragma comment(lib, "dxgi.lib")
 
 Graphics::GraphicAdapterInfo* Graphics::S_pGraphicDevices = nullptr;
-unsigned short Graphics::S_GraphicDevices_SIZE = 0;
+unsigned short Graphics::S_graphicDevices_SIZE = 0u;
 
 Window* Graphics::S_pWindow = nullptr;
 ID3D11Device* Graphics::S_pDevice = nullptr;
@@ -96,8 +96,8 @@ void Graphics::Initialize(HWND hWnd, const void* pWindow) noexcept {
 		adapters.push_back(tmp_pAdapter);
 	}
 
-	S_GraphicDevices_SIZE = adapters.size();
-	S_pGraphicDevices = new Graphics::GraphicAdapterInfo[S_GraphicDevices_SIZE];
+	S_graphicDevices_SIZE = adapters.size();
+	S_pGraphicDevices = new Graphics::GraphicAdapterInfo[S_graphicDevices_SIZE];
 
 	DXGI_SWAP_CHAIN_DESC swDesc{};
 	{
@@ -216,7 +216,7 @@ void Graphics::UnInitialize() noexcept {
 
 	if(S_pGraphicDevices != nullptr)
 	{
-		S_GraphicDevices_SIZE = 0;
+		S_graphicDevices_SIZE = 0;
 		delete[] S_pGraphicDevices;
 		S_pGraphicDevices = nullptr;
 	}

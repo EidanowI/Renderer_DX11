@@ -44,7 +44,7 @@ void ImGUIManager::ShowGUIWindows() noexcept {
 
 		const char* cringw[10];
 		std::string aa[10];
-		for (int i = 0; i < Graphics::S_GraphicDevices_SIZE; i++) {
+		for (int i = 0; i < Graphics::S_graphicDevices_SIZE; i++) {
 			std::string s(Graphics::S_pGraphicDevices[i].adapterName.begin(), Graphics::S_pGraphicDevices[i].adapterName.end());
 			aa[i] = std::to_string(Graphics::S_pGraphicDevices[i].deviceID) + ". "
 				+ s + " (score: " + std::to_string(Graphics::S_pGraphicDevices[i].score) + ")";
@@ -52,7 +52,7 @@ void ImGUIManager::ShowGUIWindows() noexcept {
 		}
 		static int currentAdapter = -1;
 		if (currentAdapter == -1) {
-			for (int i = 0; i < Graphics::S_GraphicDevices_SIZE; i++) {
+			for (int i = 0; i < Graphics::S_graphicDevices_SIZE; i++) {
 				if (Graphics::S_pGraphicDevices[i].deviceID == Window::S_CreateWindowParams.deviceID) {
 					currentAdapter = i;
 					break;
@@ -60,7 +60,7 @@ void ImGUIManager::ShowGUIWindows() noexcept {
 			}
 		}
 
-		ImGui::Combo("Adapter", &currentAdapter, cringw, Graphics::S_GraphicDevices_SIZE);
+		ImGui::Combo("Adapter", &currentAdapter, cringw, Graphics::S_graphicDevices_SIZE);
 		if (Graphics::S_pGraphicDevices[currentAdapter].deviceID != Window::S_CreateWindowParams.deviceID) {
 			ImGui::SameLine();
 			if (ImGui::Button("Change Over")) {
