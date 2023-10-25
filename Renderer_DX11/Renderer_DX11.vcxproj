@@ -142,6 +142,7 @@
     <ClCompile Include="Source\DX11\Graphics.cpp" />
     <ClCompile Include="Source\DX11\ImGUIManager.cpp" />
     <ClCompile Include="Source\DX11\InputSystem.cpp" />
+    <ClCompile Include="Source\DX11\ShaderSystem.cpp" />
     <ClCompile Include="Source\DX11\Wind.cpp" />
   </ItemGroup>
   <ItemGroup>

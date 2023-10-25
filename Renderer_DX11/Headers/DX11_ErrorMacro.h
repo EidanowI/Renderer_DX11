@@ -12,6 +12,7 @@
 #define ERROR_MAINLOOP(mainLoop) if(mainLoop != SUCKSEX) {__ERROR(L"Main Loop Failed", __FILE__)}
 #define ERROR_HRESULT(hressult) if(hres = hressult != S_OK) __ERROR(std::to_wstring(hres).c_str(), __FILE__)
 #define ERROR_PRESENT(hressult) if(hressult == DXGI_ERROR_DEVICE_REMOVED) {__ERROR(L"DEVICE REMOVED! ", __FILE__);}
+#define ERROR_FILE(isOpen) if(isOpen == false){__ERROR(L"FAIL FILE OPENING", __FILE__)}
 #else
 #define DX_DEBUG_LAYER 0
 #define ERROR_BOOL(boolean) boolean
@@ -19,4 +20,5 @@
 #define ERROR_MAINLOOP(mainLoop) if(mainLoop != SUCKSEX)///TODO Log feature
 #define ERROR_HRESULT(hressult) hressult
 #define ERROR_PRESENT(hressult) hressult
+#define ERROR_FILE(isOpen) ///TODO Log feature //if(isOpen == false)
 #endif

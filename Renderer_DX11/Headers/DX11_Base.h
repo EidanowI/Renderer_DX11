@@ -11,6 +11,7 @@
 #include <optional>
 #include <vector>
 #include <bitset>
+#include <fstream>
 
 #include "DX11_ErrorMacro.h"
 
@@ -187,5 +188,27 @@ private:
 	static ID3D11RenderTargetView* S_pRenderTargetView;
 	static ID3D11DepthStencilView* S_pDepthStencilView;
 };
+class ShaderSystem {
+	struct VertexShader {
+		long long shader_UID;
+		std::vector<char> shaderSourceCode;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader;
+	};
+	struct PixelShader {
+		long long shader_UID;
+		std::vector<char> shaderSourceCode;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
+	};
+public:
 
+	static unsigned int GetVertexShaderIndex(const char* shader_UID, const std::string& path) noexcept;
+	static unsigned int GetPixelShaderIndex(const char* shader_UID, const std::string& path) noexcept;
+	static void Clear() noexcept {
+		S_VertexShaders = std::vector<VertexShader>();
+		S_PixelShaders = std::vector<PixelShader>();
+	}
+
+	static std::vector<VertexShader> S_VertexShaders;
+	static std::vector<PixelShader> S_PixelShaders;
+};
 
