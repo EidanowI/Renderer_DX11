@@ -1,5 +1,7 @@
 #include "../../Headers/DX11_Base.h"
 
+
+
 void EMPTYFUNC() noexcept {};
 void EMPTYFUNC(LPARAM lParam) noexcept {};
 void EMPTYFUNC(WPARAM wParam, LPARAM lParam) noexcept {};
@@ -12,6 +14,7 @@ void STANDARTMOVE(int x, int y) noexcept
 	InputSystem::S_currentCursorPosX = x;
 	InputSystem::S_currentCursorPosY = y;
 }
+
 
 unsigned char* InputSystem::S_pPressedKeyCodes = nullptr;
 unsigned short InputSystem::S_pressedKeyCount = 0u;
@@ -89,6 +92,7 @@ int InputSystem::Initialize() noexcept {
 
 	return SUCKSEX;
 }
+
 void InputSystem::UnInitialize() noexcept {
 	if (S_pPressedKeyCodes != nullptr) return;
 
@@ -129,6 +133,7 @@ void InputSystem::UnInitialize() noexcept {
 	S_pFunction_OnCursorEnterCA = nullptr;
 	S_pFunction_OnCursorLeaveCA = nullptr;
 }
+
 void InputSystem::UpdateInput() noexcept {
 	for (int i = 0; i < S_pressedKeyCount; i++) {
 		InputSystem::S_ppFunction_KEY_ISPRESSED[S_pPressedKeyCodes[i]](S_pKeysLParams[S_pPressedKeyCodes[i]]);
@@ -141,6 +146,7 @@ void InputSystem::UpdateInput() noexcept {
 	S_cursorDeltaX = 0;
 	S_cursorDeltaY = 0;
 }
+
 void InputSystem::AddPressedKey(unsigned char keyCode, LPARAM lParam) noexcept {
 	if (S_isKeysPressed[keyCode] == 0b1) return;
 
@@ -151,6 +157,7 @@ void InputSystem::AddPressedKey(unsigned char keyCode, LPARAM lParam) noexcept {
 	S_pFromKeyCodesToIndex[keyCode] = S_pressedKeyCount;
 	S_pressedKeyCount++;
 }
+
 void InputSystem::RemovePressedKey(unsigned char keyCode) noexcept {
 	if (S_isKeysPressed[keyCode] == 0b0) return;
 
@@ -162,6 +169,7 @@ void InputSystem::RemovePressedKey(unsigned char keyCode) noexcept {
 	S_pFromKeyCodesToIndex[S_pPressedKeyCodes[tmp]] = tmp;
 	S_pressedKeyCount--;
 }
+
 void InputSystem::AddPressedMButton(unsigned char mButton, WPARAM wParam, LPARAM lParam) noexcept {
 	if (S_isMouseBPressed[mButton] == 0b1) return;
 
@@ -172,6 +180,7 @@ void InputSystem::AddPressedMButton(unsigned char mButton, WPARAM wParam, LPARAM
 	S_pFromMButtonsToIndex[mButton] = S_pressedMButtonsCount;
 	S_pressedMButtonsCount++;
 }
+
 void InputSystem::RemovePressedMButton(unsigned char mButton) noexcept {
 	if (S_isMouseBPressed[mButton] == 0b0) return;
 
@@ -182,6 +191,7 @@ void InputSystem::RemovePressedMButton(unsigned char mButton) noexcept {
 	S_pFromMButtonsToIndex[S_pPressedMButtons[tmp]] = tmp;
 	S_pressedMButtonsCount--;
 }
+
 void InputSystem::KillFocus() noexcept {
 	for (int i = 0; i < S_pressedKeyCount; i++) {
 		S_isKeysPressed[S_pPressedKeyCodes[i]] = false;

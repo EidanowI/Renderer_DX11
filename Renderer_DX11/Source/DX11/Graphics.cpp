@@ -3,6 +3,8 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 
+
+
 Graphics::GraphicAdapterInfo* Graphics::S_pGraphicDevices = nullptr;
 unsigned short Graphics::S_graphicDevices_SIZE = 0u;
 
@@ -36,6 +38,7 @@ void Graphics::GetDevices(const std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>
 		adapterInfos[i] = {desc.DeviceId,  std::wstring(desc.Description), score};
 	}
 }
+
 IDXGIAdapter* Graphics::GetMostPowerfulAdapter(const std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters, Graphics::GraphicAdapterInfo* adapterInfos) noexcept {
 	int bestScore = 0;
 	int bestScoreId = 0;
@@ -71,6 +74,7 @@ IDXGIAdapter* Graphics::GetMostPowerfulAdapter(const std::vector<Microsoft::WRL:
 	Window::S_CreateWindowParams.deviceID = desc.DeviceId;
 	return adapters[bestScoreId].Get();
 }
+
 IDXGIAdapter* Graphics::GetAdapterByID(const std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters) noexcept {
 	DXGI_ADAPTER_DESC desc{};
 	for (int i = 0; i < adapters.size(); i++) {
@@ -82,6 +86,8 @@ IDXGIAdapter* Graphics::GetAdapterByID(const std::vector<Microsoft::WRL::ComPtr<
 
 	}
 }
+
+
 void Graphics::Initialize(HWND hWnd, const void* pWindow) noexcept {
 	if (S_pWindow != nullptr) return;
 
@@ -211,6 +217,7 @@ void Graphics::Initialize(HWND hWnd, const void* pWindow) noexcept {
 		pDevice1->Release();
 	}*/
 }
+
 void Graphics::UnInitialize() noexcept {
 	if (S_pWindow == nullptr) return;
 
@@ -247,9 +254,12 @@ void Graphics::UnInitialize() noexcept {
 
 
 }
+
+
 void Graphics::SetRenderTargets() noexcept {
 	S_pDeviceContext->OMSetRenderTargets(1u, &S_pRenderTargetView, S_pDepthStencilView);//sprecify stensilDepth
 }
+
 void Graphics::SetupViewPort() noexcept {
 	D3D11_VIEWPORT viewPort{};
 	{
@@ -262,11 +272,13 @@ void Graphics::SetupViewPort() noexcept {
 	}
 	S_pDeviceContext->RSSetViewports(1, &viewPort);//WE need a viewport for rasterization
 }
+
 void Graphics::ClearRenderTarget() noexcept {
 	const float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	S_pDeviceContext->ClearRenderTargetView(S_pRenderTargetView, color);
 	S_pDeviceContext->ClearDepthStencilView(S_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0.0f);
 }
+
 void Graphics::PresentRenderTargets() noexcept {
 	ERROR_PRESENT(S_pSwapChain->Present(1u, 0u));
 }

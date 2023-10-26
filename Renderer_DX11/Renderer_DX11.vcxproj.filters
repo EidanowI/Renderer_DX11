@@ -24,25 +24,25 @@
     <ClCompile Include="Source\DX11\Graphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui.cpp">
+    <ClCompile Include="Dependencies\imGUI\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui_demo.cpp">
+    <ClCompile Include="Dependencies\imGUI\imgui_demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui_draw.cpp">
+    <ClCompile Include="Dependencies\imGUI\imgui_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui_impl_dx11.cpp">
+    <ClCompile Include="Dependencies\imGUI\imgui_impl_dx11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui_impl_win32.cpp">
+    <ClCompile Include="Dependencies\imGUI\imgui_impl_win32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui_tables.cpp">
+    <ClCompile Include="Dependencies\imGUI\imgui_tables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="imGUI\imgui_widgets.cpp">
+    <ClCompile Include="Dependencies\imGUI\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\DX11\ImGUIManager.cpp">
@@ -52,6 +52,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\DX11\ShaderSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\Sampler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\ImageSurface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PNGLoader\lodepng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,28 +80,31 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imconfig.h">
+    <ClInclude Include="Dependencies\imGUI\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imgui.h">
+    <ClInclude Include="Dependencies\imGUI\imgui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imgui_impl_dx11.h">
+    <ClInclude Include="Dependencies\imGUI\imgui_impl_dx11.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imgui_impl_win32.h">
+    <ClInclude Include="Dependencies\imGUI\imgui_impl_win32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imgui_internal.h">
+    <ClInclude Include="Dependencies\imGUI\imgui_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imstb_rectpack.h">
+    <ClInclude Include="Dependencies\imGUI\imstb_rectpack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imstb_textedit.h">
+    <ClInclude Include="Dependencies\imGUI\imstb_textedit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imGUI\imstb_truetype.h">
+    <ClInclude Include="Dependencies\imGUI\imstb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\PNGLoader\lodepng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

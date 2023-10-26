@@ -1,4 +1,7 @@
 #include "../../Headers/DX11_Base.h"
+
+
+
 bool ImGUIManager::S_isCreated = false;
 bool ImGUIManager::S_isShowGraphicsSetupWindow = false;
 
@@ -15,16 +18,19 @@ ImGUIManager::ImGUIManager() noexcept {
 	ImGui::StyleColorsDark();
 	S_isCreated = true;
 }
+
 ImGUIManager::~ImGUIManager() noexcept {
 	ImGui::DestroyContext();
 	S_isCreated = false;
 }
+
 
 void ImGUIManager::NewFrame() noexcept {
 	ImGui_ImplWin32_NewFrame();
 	ImGui_ImplDX11_NewFrame();
 	ImGui::NewFrame();
 }
+
 void ImGUIManager::Render() noexcept {
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -32,6 +38,7 @@ void ImGUIManager::Render() noexcept {
 	ImGui::UpdatePlatformWindows();
 	ImGui::RenderPlatformWindowsDefault();
 }
+
 void ImGUIManager::ShowGUIWindows() noexcept {
 	ImGui::Begin("Main Setup Window");
 	ImGui::Checkbox("Show Graphics Sepup", &S_isShowGraphicsSetupWindow);

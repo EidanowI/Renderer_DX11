@@ -1,9 +1,11 @@
 #pragma once
 #include <Windows.h>
 #include <wrl.h>//for Microsoft::WRL
-#include "../imGUI/imgui.h"
-#include "../imGUI/imgui_impl_win32.h"
-#include "../imGUI/imgui_impl_dx11.h"
+#include "../Dependencies/imGUI/imgui.h"
+#include "../Dependencies/imGUI/imgui_impl_win32.h"
+#include "../Dependencies/imGUI/imgui_impl_dx11.h"
+
+#include "../Dependencies/PNGLoader/lodepng.h"
 
 #include <d3d11.h>
 
@@ -211,4 +213,66 @@ public:
 	static std::vector<VertexShader> S_VertexShaders;
 	static std::vector<PixelShader> S_PixelShaders;
 };
+class ImageSurface {
+public:
+	struct Color {
+		unsigned int color;
+		Color() noexcept : color(0) {}
+		Color(const Color& color) noexcept : color(color.color) {}
+		Color(unsigned int color) noexcept : color(color) {}
+		typedef unsigned char UCHAR;
+		Color(UCHAR r, UCHAR g, UCHAR b, UCHAR a)noexcept : color(((r << 24u) | (g << 16u) | (b << 8u) | a)) {}
+		UCHAR GetR() const { return color >> 24u; }
+		UCHAR GetG() const { return color >> 16u; }
+		UCHAR GetB() const { return color >> 8u; }
+		UCHAR GetA() const { return color; }
+		void SetR(const UCHAR r) noexcept { (color &= 0x00FFFFFF) |= (r << 24u); }
+		void SetG(const UCHAR g) noexcept { (color &= 0xFF00FFFF) |= (g << 16u); }
+		void SetB(const UCHAR b) noexcept { (color &= 0xFFFF00FF) |= (b << 8u); }
+		void SetA(const UCHAR a) noexcept { (color &= 0xFFFFFF00) |= a; }
+	};
+	ImageSurface(unsigned int width, unsigned int height, std::vector<Color>& bufer) noexcept;
+	ImageSurface(unsigned int width, unsigned int height) noexcept;
+	ImageSurface(const ImageSurface& surface) = delete;
+	~ImageSurface() noexcept;
+	void ClearSurface(const Color& color) noexcept;
+	Color& GetPixel(unsigned int x, unsigned int y) const noexcept;
+	void SetPixel(unsigned int x, unsigned int y, const Color color) noexcept;
+	char* GetBuffer() const noexcept {
+		return (char*)m_buffer.data();
+	}
+	unsigned int GetWidth() const noexcept {
+		return m_width;
+	}
+	unsigned int GetHeight() const noexcept {
+		return m_height;
+	}
+	static ImageSurface FromFile(const std::string& name) noexcept;
+	void Copy(const ImageSurface& src) noexcept;
+private:
+	std::vector<Color> m_buffer;
+	unsigned int m_width;
+	unsigned int m_height;
+};
+class BindToPipeline {
+public:
+	virtual void Bind() noexcept = 0;
+};
+class Sampler : public BindToPipeline {
+public:
+	Sampler() noexcept;
+	void Bind() noexcept override;
+protected:
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_pSampleState;
+};
+class Texture : public BindToPipeline {
+public:
+	Texture(const ImageSurface& surface, unsigned int index = 0u) noexcept;
+	void Bind() noexcept override;
+private:
+	unsigned int m_textureBindIndex;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pSahderResView;
+};
+
+
 

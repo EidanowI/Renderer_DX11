@@ -1,6 +1,8 @@
 #include "../../Headers/DX11_Base.h"
 #include "../../resource.h"
 
+
+
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -31,10 +33,12 @@ Window::WindowClass::WindowClass() noexcept : m_hInst(GetModuleHandle(nullptr))
 	//wc.hIconSm = (HICON)0;
 	RegisterClassEx(&wc);
 }
+
 Window::WindowClass::~WindowClass() noexcept
 {
 	UnregisterClass(S_wndClassName, GetInstance());
 }
+
 
 Window::Window(unsigned int width, unsigned int height, const wchar_t* windowName) noexcept{
 	if (S_hWnd != nullptr) return;
@@ -64,6 +68,7 @@ Window::Window(unsigned int width, unsigned int height, const wchar_t* windowNam
 
 	ImGui_ImplWin32_Init(S_hWnd);
 }
+
 Window::~Window() noexcept
 {
 	ImGui_ImplWin32_Shutdown();
@@ -74,6 +79,8 @@ Window::~Window() noexcept
 void Window::SetWindowTitle(const std::wstring& title) noexcept {
 	SetWindowText(S_hWnd, title.c_str());;
 }
+
+
 std::optional<int> Window::ProcessMsg() noexcept {
 	MSG msg;
 

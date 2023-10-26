@@ -1,5 +1,7 @@
 #include "../../Headers/DX11_Base.h"
 
+
+
 std::vector<ShaderSystem::VertexShader> ShaderSystem::S_VertexShaders = std::vector<ShaderSystem::VertexShader>();
 std::vector<ShaderSystem::PixelShader>  ShaderSystem::S_PixelShaders = std::vector<ShaderSystem::PixelShader>();
 
@@ -28,6 +30,7 @@ unsigned int ShaderSystem::GetVertexShaderIndex(const char* shader_UID, const st
 	S_VertexShaders.push_back(vertShader);
 	return VertShadersSIZE;
 }
+
 unsigned int ShaderSystem::GetPixelShaderIndex(const char* shader_UID, const std::string& path) noexcept {
 	int hres = 0;
 
