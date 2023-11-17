@@ -66,6 +66,15 @@
     <ClCompile Include="Dependencies\PNGLoader\lodepng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DX11\GraphicsFundamentals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -107,6 +116,9 @@
     <ClInclude Include="Dependencies\PNGLoader\lodepng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\GparhicsFundamentals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Renderer_DX11.rc">
@@ -117,5 +129,10 @@
     <Image Include="..\..\..\..\Desktop\DX11_Renderer_ICON.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\TestVert.hlsl" />
+    <FxCompile Include="Shaders\TestPixl.hlsl" />
+    <FxCompile Include="Shaders\TestWhit.hlsl" />
   </ItemGroup>
 </Project>

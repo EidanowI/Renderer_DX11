@@ -8,6 +8,9 @@
 Graphics::GraphicAdapterInfo* Graphics::S_pGraphicDevices = nullptr;
 unsigned short Graphics::S_graphicDevices_SIZE = 0u;
 
+std::vector<Camera> Graphics::S_cameras = std::vector<Camera>();
+int Graphics::S_activeCameraIndex = -1;
+
 Window* Graphics::S_pWindow = nullptr;
 ID3D11Device* Graphics::S_pDevice = nullptr;
 ID3D11DeviceContext* Graphics::S_pDeviceContext = nullptr;

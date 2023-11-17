@@ -2,19 +2,38 @@
 
 
 
+
+extern float cameraXRotation;
+extern float cameraYRotation;
+extern float cameraZRotation;
+
 void EMPTYFUNC() noexcept {};
 void EMPTYFUNC(LPARAM lParam) noexcept {};
 void EMPTYFUNC(WPARAM wParam, LPARAM lParam) noexcept {};
 void EMPTYFUNC(WPARAM wParam, int x, int y) noexcept {};
 void EMPTYFUNC(int x, int y) noexcept {};
-void STANDARTMOVE(int x, int y) noexcept
+void STANDART_MOVE(int x, int y) noexcept
 {
-	InputSystem::S_cursorDeltaX = x - InputSystem::S_currentCursorPosX;
-	InputSystem::S_cursorDeltaY = y - InputSystem::S_currentCursorPosY;
+	//InputSystem::S_cursorDeltaX = x - InputSystem::S_currentCursorPosX;
+	//InputSystem::S_cursorDeltaY = y - InputSystem::S_currentCursorPosY;
 	InputSystem::S_currentCursorPosX = x;
 	InputSystem::S_currentCursorPosY = y;
 }
-
+void STANDART_ESCAPE(LPARAM lParam) noexcept
+{
+	if (InputSystem::S_isCursorEnable == true) {
+		InputSystem::S_isCursorEnable = false;
+		Window::DisableCursor();
+		Window::FixateCursor();
+		ImGUIManager::DisableImGuiMouse();
+	}
+	else {
+		InputSystem::S_isCursorEnable = true;
+		Window::EnableCursor();
+		Window::FreeCursor();
+		ImGUIManager::EnableImGuiMouse();
+	}
+}
 
 unsigned char* InputSystem::S_pPressedKeyCodes = nullptr;
 unsigned short InputSystem::S_pressedKeyCount = 0u;
@@ -34,8 +53,9 @@ int InputSystem::S_cursorDeltaX = 0;
 int InputSystem::S_cursorDeltaY = 0;
 
 bool InputSystem::S_isCursorInClientArea = false;
+bool InputSystem::S_isCursorEnable = true;
 int InputSystem::S_wheelDelta = 0;
-
+std::vector<unsigned char> InputSystem::S_rawBuffer = std::vector<unsigned char>();
 
 void (**InputSystem::S_ppFunction_ONCE_KEY)(LPARAM lParam) noexcept = nullptr;
 void (**InputSystem::S_ppFunction_KEY_ISPRESSED)(LPARAM lParam) noexcept = nullptr;
@@ -82,13 +102,15 @@ int InputSystem::Initialize() noexcept {
 		S_ppFunction_MOUSE_ISPRESSED[i] = EMPTYFUNC;
 		S_ppFunction_MOUSE_RELEASE[i] = EMPTYFUNC;
 	}
-	S_pFunction_MOVE_MOUSE = STANDARTMOVE;
+	S_pFunction_MOVE_MOUSE = STANDART_MOVE;
 
 	S_pFunction_WHEELUP_STEP = EMPTYFUNC;
 	S_pFunction_WHEELDOWN_STEP = EMPTYFUNC;
 
 	S_pFunction_OnCursorEnterCA = EMPTYFUNC;
 	S_pFunction_OnCursorLeaveCA = EMPTYFUNC;
+
+	S_ppFunction_ONCE_KEY[VK_ESCAPE] = STANDART_ESCAPE;
 
 	return SUCKSEX;
 }
@@ -143,6 +165,7 @@ void InputSystem::UpdateInput() noexcept {
 		InputSystem::MousePressedInfo info = S_pMButtonsInfos[S_pPressedMButtons[i]];
 		InputSystem::S_ppFunction_MOUSE_ISPRESSED[S_pPressedMButtons[i]](info.wParam, info.x, info.y);
 	}
+
 	S_cursorDeltaX = 0;
 	S_cursorDeltaY = 0;
 }

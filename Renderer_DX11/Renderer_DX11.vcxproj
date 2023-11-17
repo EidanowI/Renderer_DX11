@@ -140,7 +140,10 @@
     <ClCompile Include="Dependencies\imGUI\imgui_widgets.cpp" />
     <ClCompile Include="Dependencies\PNGLoader\lodepng.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Source\DX11\Camera.cpp" />
+    <ClCompile Include="Source\DX11\Cube.cpp" />
     <ClCompile Include="Source\DX11\Graphics.cpp" />
+    <ClCompile Include="Source\DX11\GraphicsFundamentals.cpp" />
     <ClCompile Include="Source\DX11\ImageSurface.cpp" />
     <ClCompile Include="Source\DX11\ImGUIManager.cpp" />
     <ClCompile Include="Source\DX11\InputSystem.cpp" />
@@ -162,6 +165,7 @@
     <ClInclude Include="Dependencies\imGUI\imstb_rectpack.h" />
     <ClInclude Include="Dependencies\imGUI\imstb_textedit.h" />
     <ClInclude Include="Dependencies\imGUI\imstb_truetype.h" />
+    <ClInclude Include="Headers\GparhicsFundamentals.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +173,31 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Desktop\DX11_Renderer_ICON.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\TestPixl.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Renderer_DX11\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\TestVert.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Renderer_DX11\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\TestWhit.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Renderer_DX11\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

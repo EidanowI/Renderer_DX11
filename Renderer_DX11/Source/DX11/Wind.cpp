@@ -66,6 +66,13 @@ Window::Window(unsigned int width, unsigned int height, const wchar_t* windowNam
 	ShowWindow(S_hWnd, SW_SHOWDEFAULT);
 	UpdateWindow(S_hWnd);
 
+	RAWINPUTDEVICE rid;
+	rid.usUsagePage = 0x01; // Generic Desktop Controls
+	rid.usUsage = 0x02; // Mouse
+	rid.dwFlags = 0;
+	rid.hwndTarget = nullptr;
+	ERROR_IF(RegisterRawInputDevices(&rid, 1, sizeof(rid)) == FALSE, L"Fail to register raw input device");
+
 	ImGui_ImplWin32_Init(S_hWnd);
 }
 
@@ -76,8 +83,37 @@ Window::~Window() noexcept
 	S_hWnd = nullptr;
 }
 
+
 void Window::SetWindowTitle(const std::wstring& title) noexcept {
 	SetWindowText(S_hWnd, title.c_str());;
+}
+
+void Window::EnableCursor() noexcept {
+	while (ShowCursor(TRUE) < 0);
+}
+
+void Window::DisableCursor() noexcept {
+	while (ShowCursor(FALSE) >= 0);
+}
+
+void Window::FixateCursor() noexcept
+{
+	RECT rect;
+	rect.right = InputSystem::S_currentCursorPosX + 2;
+	rect.left = InputSystem::S_currentCursorPosX - 2;
+	rect.top = InputSystem::S_currentCursorPosY - 2;
+	rect.bottom = InputSystem::S_currentCursorPosY + 2;
+
+	SetCursorPos(1920 / 3, 1080 / 2);
+	GetClientRect(S_hWnd, &rect);
+
+	MapWindowPoints(S_hWnd, nullptr, (POINT*)(&rect), 2);//converte from Window coordinate to screen coorditate
+	ClipCursor(&rect);
+}
+
+void Window::FreeCursor() noexcept
+{
+	ClipCursor(nullptr);
 }
 
 
@@ -100,6 +136,54 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		break;
+
+
+	case WM_INPUT:
+	{
+		UINT size;
+		// first get the size of the input data
+		if (GetRawInputData(
+			reinterpret_cast<HRAWINPUT>(lParam),
+			RID_INPUT,
+			nullptr,
+			&size,
+			sizeof(RAWINPUTHEADER)) == -1)
+		{
+			// bail msg processing if error
+			break;
+		}
+		InputSystem::S_rawBuffer.resize(size);
+		// read in the input data
+		if (GetRawInputData(
+			reinterpret_cast<HRAWINPUT>(lParam),
+			RID_INPUT,
+			InputSystem::S_rawBuffer.data(),
+			&size,
+			sizeof(RAWINPUTHEADER)) != size)
+		{
+			// bail msg processing if error
+			break;
+		}
+		// process the raw input data
+		auto& ri = (const RAWINPUT&)(*InputSystem::S_rawBuffer.data());
+		if (ri.header.dwType == RIM_TYPEMOUSE &&
+			(ri.data.mouse.lLastX != 0 || ri.data.mouse.lLastY != 0))
+		{
+			InputSystem::S_cursorDeltaX = ri.data.mouse.lLastX;
+			InputSystem::S_cursorDeltaY = ri.data.mouse.lLastY;
+		}
+		break;
+	}
+	case WM_ACTIVATE:
+		break;
+
+	case WM_KILLFOCUS:
+		//callse when the window lost the focus
+		InputSystem::KillFocus();
+		break;
+	case WM_SETFOCUS:
+		//called when the window is back in focus
+		break;
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 		if (!(lParam & 0b01000000000000000000000000000000)) {//30 bit is 1 if key was pressed before this message
@@ -115,10 +199,6 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_CHAR:
 		InputSystem::S_pFunction_ONCHAR(wParam, lParam);
 		break;
-	case WM_KILLFOCUS:
-		InputSystem::KillFocus();
-		break;
-
 	case WM_MOUSEMOVE:
 	{
 		short posX = *((short*)(char*)&lParam);
@@ -130,10 +210,10 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			InputSystem::S_pFunction_MOVE_MOUSE(posX, posY);
 
 
-			if (!InputSystem::GetIsCursorInCliendArea())
+			if (!InputSystem::S_isCursorInClientArea)
 			{
 				SetCapture(hWnd);
-				InputSystem::SetIsCursorInClientArea(true);
+				InputSystem::S_isCursorInClientArea = true;
 				InputSystem::S_pFunction_OnCursorEnterCA();
 			}
 		}
@@ -147,7 +227,7 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			{
 				ReleaseCapture();
 				InputSystem::KillFocus();
-				InputSystem::SetIsCursorInClientArea(false);
+				InputSystem::S_isCursorInClientArea = false;
 				InputSystem::S_pFunction_OnCursorLeaveCA();
 			}
 		}

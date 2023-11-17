@@ -78,3 +78,14 @@ void ImGUIManager::ShowGUIWindows() noexcept {
 		ImGui::End();
 	}
 }
+
+
+void ImGUIManager::EnableImGuiMouse()
+{
+	ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+}
+
+void ImGUIManager::DisableImGuiMouse()
+{
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
+}
