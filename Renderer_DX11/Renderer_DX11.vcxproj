@@ -110,6 +110,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);assimp-vc140-mt.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Renderer_DX11/Dependencies/assimp;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,15 +149,24 @@
     <ClCompile Include="Source\DX11\ImageSurface.cpp" />
     <ClCompile Include="Source\DX11\ImGUIManager.cpp" />
     <ClCompile Include="Source\DX11\InputSystem.cpp" />
+    <ClCompile Include="Source\DX11\Mesh.cpp" />
+    <ClCompile Include="Source\DX11\MeshedObject.cpp" />
+    <ClCompile Include="Source\DX11\Model.cpp" />
+    <ClCompile Include="Source\DX11\ModelSystem.cpp" />
+    <ClCompile Include="Source\DX11\PointLight.cpp" />
     <ClCompile Include="Source\DX11\Sampler.cpp" />
+    <ClCompile Include="Source\DX11\Scene.cpp" />
     <ClCompile Include="Source\DX11\ShaderSystem.cpp" />
     <ClCompile Include="Source\DX11\Texture.cpp" />
-    <ClCompile Include="Source\DX11\Wind.cpp" />
+    <ClCompile Include="Source\DX11\Transform.cpp" />
+    <ClCompile Include="Source\DX11\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Dependencies\PNGLoader\lodepng.h" />
-    <ClInclude Include="Headers\DX11_Base.h" />
+    <ClInclude Include="Headers\BindToPipeline.h" />
+    <ClInclude Include="Headers\Camera.h" />
+    <ClInclude Include="Headers\Cube.h" />
     <ClInclude Include="Headers\DX11_ErrorMacro.h" />
     <ClInclude Include="Dependencies\imGUI\imconfig.h" />
     <ClInclude Include="Dependencies\imGUI\imgui.h" />
@@ -166,6 +177,21 @@
     <ClInclude Include="Dependencies\imGUI\imstb_textedit.h" />
     <ClInclude Include="Dependencies\imGUI\imstb_truetype.h" />
     <ClInclude Include="Headers\GparhicsFundamentals.h" />
+    <ClInclude Include="Headers\Graphics.h" />
+    <ClInclude Include="Headers\ImageSurface.h" />
+    <ClInclude Include="Headers\ImGUIManager.h" />
+    <ClInclude Include="Headers\InputSystem.h" />
+    <ClInclude Include="Headers\Mesh.h" />
+    <ClInclude Include="Headers\MeshedObject.h" />
+    <ClInclude Include="Headers\Model.h" />
+    <ClInclude Include="Headers\ModelSystem.h" />
+    <ClInclude Include="Headers\PointLight.h" />
+    <ClInclude Include="Headers\Sampler.h" />
+    <ClInclude Include="Headers\Scene.h" />
+    <ClInclude Include="Headers\ShaderSystem.h" />
+    <ClInclude Include="Headers\Textures.h" />
+    <ClInclude Include="Headers\Transform.h" />
+    <ClInclude Include="Headers\Window.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,4 @@
-#include "../../Headers/DX11_Base.h"
-
+#include "../../Headers/ImageSurface.h"
 
 
 ImageSurface::ImageSurface(unsigned int width, unsigned int height, std::vector<Color>& bufer) noexcept
@@ -35,6 +34,17 @@ void ImageSurface::SetPixel(unsigned int x, unsigned int y, const Color color) n
 }
 
 
+char* ImageSurface::GetBuffer() const noexcept {
+	return (char*)m_buffer.data();
+}
+unsigned int ImageSurface::GetWidth() const noexcept {
+	return m_width;
+}
+unsigned int ImageSurface::GetHeight() const noexcept {
+	return m_height;
+}
+
+
 ImageSurface ImageSurface::FromFile(const std::string& name) noexcept {
 	unsigned int width = 0;
 	unsigned int height = 0;
@@ -48,7 +58,6 @@ ImageSurface ImageSurface::FromFile(const std::string& name) noexcept {
 		buffer[width * height - 1 - i].SetG(image[i * 4 + 2]);
 		buffer[width * height - 1 - i].SetB(image[i * 4 + 1]);
 		buffer[width * height - 1 - i].SetA(image[i * 4]);
-		//buffer[i].SetA(0);
 	}
 
 	return ImageSurface(width, height, buffer);

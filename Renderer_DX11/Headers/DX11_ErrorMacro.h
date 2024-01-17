@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Windows.h>
 
 #define SUCKSEX 0
 
@@ -16,6 +17,7 @@
 #define ERROR_FILE(isOpen) if(isOpen == false){__ERROR(L"FAIL FILE OPENING", __FILE__)}
 #else
 #define DX_DEBUG_LAYER 0
+#define __ERROR(error_type, file)
 #define ERROR_BOOL(boolean) boolean
 #define ERROR_IF(condition, error_type)
 #define ERROR_KEEP_IF(condition, error_type) condition

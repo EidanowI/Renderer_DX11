@@ -1,122 +1,150 @@
 #pragma once
-#include "DX11_Base.h"
+
+#include <DirectXMath.h>
 #include <math.h>
 
-///DEFINE FLOAT COLORS WITH 1.0f ALPHA
-#define RED_A_FLOAT {1.0f, 0.0f, 0.0f, 1.0f}
-#define GREEN_A_FLOAT {0.0f, 1.0f, 0.0f, 1.0f}
-#define BLUE_A_FLOAT {0.0f, 0.0f, 1.0f, 1.0f}
-#define YELLOW_A_FLOAT {1.0f, 1.0f, 0.0f, 1.0f}
-#define CYAN_A_FLOAT {0.0f, 1.0f, 1.0f, 1.0f}
-#define MAGENTA_A_FLOAT {1.0f, 0.0f, 1.0f, 1.0f}
-#define WHITE_A_FLOAT {1.0f, 1.0f, 1.0f, 1.0f}
-#define BLACK_A_FLOAT {0.0f, 0.0f, 0.0f, 1.0f}
+#include "DX11_ErrorMacro.h"
 
-///DEFINE TEST ZERO PARAMETERES
-#define NORM_0 {0.0f, 0.0f, 0.0f}
-#define UV_0 {0.0f, 0.0f}
+#include <string>
 
 
-namespace GraphicsFundament {
+#ifdef IS_DEBUG
+void GuiMatrix(const DirectX::XMMATRIX& matrix, const std::string& name) noexcept;
+#endif // IS_DEBUG
+
+/*Gets the value by index in the DirectX::XMMATRIX*/
+#define MatAt(mat,i) (*((float*)&mat + i))
+namespace GraphicsFundament 
+{
+	float Clamp(float min, float max, float value) noexcept;
+	float Clamp01(float value) noexcept;
 	float Random01() noexcept;
 	float RandomMinus11() noexcept;
+	
+	class Vector2D {
+	public:
+		Vector2D(float x, float y) noexcept;
+		Vector2D(float a) noexcept;
+		Vector2D() noexcept;
 
-	struct Vector3D {
-		Vector3D() noexcept : x(0), y(0), z(0) {}
+		float Length() const noexcept;
+		Vector2D Normalized() const noexcept;
+		void Normalize() noexcept;
+		Vector2D Clamped(float min, float max) const noexcept;
+		Vector2D Clamped01() const noexcept;
+		void Clamp(float min, float max) noexcept;
+		void Clamp01() noexcept;
 
-		Vector3D(float x, float y, float z) noexcept : x(x), y(y), z(z) {}
+		Vector2D operator+ (const Vector2D& o) noexcept;
+		Vector2D operator- (const Vector2D& o) noexcept;
+		Vector2D operator* (const Vector2D& o) noexcept;
+		Vector2D operator* (const float a) noexcept;
+		Vector2D operator/ (const Vector2D& o) noexcept;
+		Vector2D operator/ (const float a) noexcept;
+		Vector2D operator+= (const Vector2D& o) noexcept;
+		Vector2D operator-= (const Vector2D& o) noexcept;
+		Vector2D operator*= (const Vector2D& o) noexcept;
+		Vector2D operator*= (const float a) noexcept;
+		Vector2D operator/= (const Vector2D& o) noexcept;
+		Vector2D operator/= (const float a) noexcept;
 
-		float Length() {
-			return sqrt(x * x + y * y + z * z);
-		}
+		float& r() noexcept;
+		float& g() noexcept;
 
+		float x;
+		float y;
+	};
 
-		Vector3D operator +(const Vector3D& o) noexcept {
-			return Vector3D(x + o.x, y + o.y, z + o.z);
-		}
+	class Vector3D 
+	{
+	public:
+		Vector3D(float x, float y, float z) noexcept;
+		Vector3D(float a) noexcept;
+		Vector3D() noexcept;
 
-		Vector3D operator -(const Vector3D& o) noexcept {
-			return Vector3D(x - o.x, y - o.y, z - o.z);
-		}
+		float Length() const noexcept;
+		Vector3D Normalized() const noexcept;
+		void Normalize() noexcept;
+		Vector3D Clamped(float min, float max) const noexcept;
+		Vector3D Clamped01() const noexcept;
+		void Clamp(float min, float max) noexcept;
+		void Clamp01() noexcept;
 
-		Vector3D operator *(const Vector3D& o) noexcept {
-			return Vector3D(x * o.x, y * o.y, z * o.z);
-		}
-		Vector3D operator *(const float a) noexcept {
-			return Vector3D(x * a, y * a, z * a);
-		}
+		Vector3D operator+ (const Vector3D& o) noexcept;
+		Vector3D operator- (const Vector3D& o) noexcept;
+		Vector3D operator* (const Vector3D& o) noexcept;
+		Vector3D operator* (const float a) noexcept;
+		Vector3D operator/ (const Vector3D& o) noexcept;
+		Vector3D operator/ (const float a) noexcept;
+		Vector3D operator+= (const Vector3D& o) noexcept;
+		Vector3D operator-= (const Vector3D& o) noexcept;
+		Vector3D operator*= (const Vector3D& o) noexcept;
+		Vector3D operator*= (const float a) noexcept;
+		Vector3D operator/= (const Vector3D& o) noexcept;
+		Vector3D operator/= (const float a) noexcept;
 
-		Vector3D operator /(const Vector3D& o) noexcept {
-			return Vector3D(x / o.x, y / o.y, z / o.z);
-		}
-		Vector3D operator /(const float a) noexcept {
-			return Vector3D(x / a, y / a, z / a);
-		}
-
-		Vector3D operator +=(const Vector3D& o) noexcept {
-			*this = *this + o;
-			return *this;
-		}
-
-		Vector3D operator -=(const Vector3D& o) noexcept {
-			*this = *this - o;
-			return *this;
-		}
-
-		Vector3D operator *=(const Vector3D& o) noexcept {
-			*this = *this * o;
-			return *this;
-		}
-		Vector3D operator *=(const float a) noexcept {
-				*this = *this * a;
-				return *this;
-		}
-
-		Vector3D operator /=(const Vector3D& o) noexcept {
-			*this = *this / o;
-			return *this;
-		}
-		Vector3D operator /=(const float a) noexcept {
-			*this = *this / a;
-			return *this;
-		}
-
+		float& r() noexcept;
+		float& g() noexcept;
+		float& b() noexcept;
 
 		float x;
 		float y;
 		float z;
-
 	};
+
+	class Vector4D
+	{
+	public:
+		Vector4D(float x, float y, float z, float w) noexcept;
+		Vector4D(float a) noexcept;
+		Vector4D() noexcept;
+
+		static Vector4D one() noexcept;
+		static Vector4D zero() noexcept;
+		static Vector4D white() noexcept;
+		static Vector4D black() noexcept;
+		static Vector4D red() noexcept;
+		static Vector4D green() noexcept;
+		static Vector4D blue() noexcept;
+		static Vector4D yellow() noexcept;
+		static Vector4D cyan() noexcept;
+		static Vector4D magenta() noexcept;
+
+		float Length() const noexcept;
+		Vector4D Normalized() const noexcept;
+		void Normalize() noexcept;
+		Vector4D Clamped(float min, float max) const noexcept;
+		Vector4D Clamped01() const noexcept;
+		void Clamp(float min, float max) noexcept;
+		void Clamp01() noexcept;
+
+		Vector4D operator +(const Vector4D& o) noexcept;
+		Vector4D operator -(const Vector4D& o) noexcept;
+		Vector4D operator *(const Vector4D& o) noexcept;
+		Vector4D operator *(const float a) noexcept;
+		Vector4D operator /(const Vector4D& o) noexcept;
+		Vector4D operator /(const float a) noexcept;
+		Vector4D operator +=(const Vector4D& o) noexcept;
+		Vector4D operator -=(const Vector4D& o) noexcept;
+		Vector4D operator *=(const Vector4D& o) noexcept;
+		Vector4D operator *=(const float a) noexcept;
+		Vector4D operator /=(const Vector4D& o) noexcept;
+		Vector4D operator /=(const float a) noexcept;
+
+		float& r() noexcept;
+		float& g() noexcept;
+		float& b() noexcept;
+		float& a() noexcept;
+
+		float x;
+		float y;
+		float z;
+		float w;
+	};
+
+	DirectX::XMMATRIX MakeTransformMatrix(const Vector3D& position, const Vector3D& rotationRPY, const Vector3D& scale) noexcept;
+	DirectX::XMMATRIX MakeNormalMatrix(const DirectX::XMMATRIX& transform) noexcept;
 }
 
-struct Vertex48B {
-	struct {
-		float x;
-		float y;
-		float z;
-	} position;
-	struct {
-		float nX;
-		float nY;
-		float nZ;
-	} normal;
-	struct {
-		float x;
-		float y;
-	} UV;
-	struct {
-		float r;
-		float g;
-		float b;
-		float a;
-	} color;
 
-	static D3D11_INPUT_ELEMENT_DESC inputElementDesc[4];
-	static unsigned char elementDescNum;
-};
-struct TrianglePoly {
-	unsigned short I1;
-	unsigned short I2;
-	unsigned short I3;
-};
 

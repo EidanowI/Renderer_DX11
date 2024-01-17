@@ -1,6 +1,6 @@
-#include "../../Headers/DX11_Base.h"
-
-
+#include "../../Headers/ShaderSystem.h"
+#include "../../Headers/Graphics.h"
+#include "../../Headers/DX11_ErrorMacro.h"
 
 std::vector<ShaderSystem::VertexShader> ShaderSystem::S_VertexShaders = std::vector<ShaderSystem::VertexShader>();
 std::vector<ShaderSystem::PixelShader>  ShaderSystem::S_PixelShaders = std::vector<ShaderSystem::PixelShader>();
@@ -54,4 +54,9 @@ unsigned int ShaderSystem::GetPixelShaderIndex(const char* shader_UID, const std
 	ERROR_HRESULT(Graphics::GetDevice()->CreatePixelShader(pixelShader.shaderSourceCode.data(), pix_SIZE, nullptr, &pixelShader.pixelShader));
 	S_PixelShaders.push_back(pixelShader);
 	return PixelShadersSIZE;
+}
+
+void ShaderSystem::Clear() noexcept {
+	S_VertexShaders = std::vector<VertexShader>();
+	S_PixelShaders = std::vector<PixelShader>();
 }

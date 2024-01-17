@@ -1,4 +1,4 @@
-#define POINT_LIGHT_NUM 4
+#define POINT_LIGHT_NUM 64
 
 struct Material
 {
@@ -15,8 +15,8 @@ struct DirectionalLight
 struct PointLight
 {
     float4 position;//w - specular strength
-    float4 color;//a - Ambient Strength
-    float4 attenuation; //r - const, g - linear, b - quadratic, a - intensity ( intensity * 1 / (c + b * distance + a * distance^2))
+    float4 color;
+    float4 params; //r - const, g - linear, b - quadratic, a - m_ambientStrength ( intensity * 1 / (c + b * distance + a * distance^2))
 };
 struct SpotLight
 {
@@ -30,8 +30,10 @@ cbuffer ConstBuf0 : register(b0)
     float4 BUF0_view_position;//xyz - view position, w - pow factor 
     float4 BUF0_view_direction;//xyz - view_direction, w - cutof cosine
     PointLight BUF0_pointLight[POINT_LIGHT_NUM];//PointLight BUF0_pointLight[POINT_LIGHT_NUM];
-    //PointLight BUF0_pointLight;
-    //Material material;
+    unsigned int BUF0_pointLigthNum;
+    float tmp1;
+    float tmp2;
+    float tmp3;
 };
 
 
@@ -84,15 +86,15 @@ float4 main(float3 pin_normal : Normal, float2 pin_UV : UV, float4 pin_color : C
     testDirLight.direction = float4(0.0f, -1.0f, 0.0f, 0.87f);
 
     float3 light = 0.0f;
-    light += CalculateDirectionalLight(testDirLight, normalNormalized, pin_pixel_pos_worldspace);
+    //light += CalculateDirectionalLight(testDirLight, normalNormalized, pin_pixel_pos_worldspace);
     
     for (int i = 0; i < POINT_LIGHT_NUM; i++)
     {
-        light += CalculatePointLight(BUF0_pointLight[i], normalNormalized, pin_pixel_pos_worldspace);
+        //light += CalculatePointLight(BUF0_pointLight[i], normalNormalized, pin_pixel_pos_worldspace);
     }
-    
+    light += CalculatePointLight(BUF0_pointLight[1], normalNormalized, pin_pixel_pos_worldspace);
     //light = clamp(light, float3(0.0f, 0.0f, 0.0f), float3(1.0f, 1.0f, 1.0f));
-    
+    //return tex.Sample(splr, pin_UV);
     return tex.Sample(splr, pin_UV) * float4(light, 1.0f);
 }
 
@@ -112,12 +114,12 @@ float3 CalculatePointLight(const PointLight pointLight, const float3 normNormalW
     float3 reflectFromLightDir = reflect(-toLightDir, normNormalWS);
     
     float distance = length(pointLight.position.xyz - pixelPosWS);
-    float attenuation = 1.0f / (pointLight.attenuation.r +
-    (pointLight.attenuation.g * distance) +
-    (pointLight.attenuation.b * distance * distance));
+    float attenuation = 1.0f / (pointLight.params.r +
+    (pointLight.params.g * distance) +
+    (pointLight.params.b * distance * distance));
 
     float diffuse = max(dot(normNormalWS, toLightDir), 0.0f);
-    float specular = pow(max(dot(toLightDir, reflectFromLightDir), 0.0f), BUF0_view_position.w) * pointLight.position.w;
+    //float specular = pow(max(dot(toLightDir, reflectFromLightDir), 0.0f), BUF0_view_position.w) * pointLight.position.w;
     
     return (attenuation * (diffuse)) * pointLight.color.rgb; //pointLight.color.a +
 }

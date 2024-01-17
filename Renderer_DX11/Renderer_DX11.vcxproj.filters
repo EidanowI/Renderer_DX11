@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\DX11\Wind.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\DX11\Graphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,12 +72,33 @@
     <ClCompile Include="Source\DX11\Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DX11\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\MeshedObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\ModelSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\DX11_Base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\DX11_ErrorMacro.h">
@@ -117,6 +135,60 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\GparhicsFundamentals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\ImageSurface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\ImGUIManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\InputSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\MeshedObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\ModelSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Sampler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\ShaderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Textures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\BindToPipeline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

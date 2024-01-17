@@ -1,10 +1,10 @@
-#include "../../Headers/DX11_Base.h"
+#include "../../Headers/ImGUIManager.h"
+#include "../../Headers/Window.h"
 
-
+extern bool SHOULD_CLOSE_WINDOW_AND_CREATE_NEW;
 
 bool ImGUIManager::S_isCreated = false;
 bool ImGUIManager::S_isShowGraphicsSetupWindow = false;
-
 
 ImGUIManager::ImGUIManager() noexcept {
 	if (S_isCreated) return;

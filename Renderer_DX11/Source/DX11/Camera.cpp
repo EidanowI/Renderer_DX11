@@ -1,11 +1,18 @@
-#include "../../Headers/DX11_Base.h"
+#include "../../Headers/Camera.h"
+#include "../../Headers/Window.h"
 
 Camera::Camera(const GraphicsFundament::Vector3D& pos, const GraphicsFundament::Vector3D& rotation) noexcept {
 	m_position = pos;
 	m_camOrientation = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
 	m_projection = DirectX::XMMatrixPerspectiveFovLH(1.0f, (float)Window::GetWindowWidth() / (float)Window::GetWindowHeight(), 0.1f, 100.0f);
 	UpdateVectors();
+
+	m_testVert_Buf0.projection = m_projection;
+	m_testVert_Buf0.view = m_view;
+
+	m_pTestVert_Buf0 = Graphics::CreateConstBuffer((char*) & m_testVert_Buf0, sizeof(Camera::TestVert_Buf0));
 }
+
 
 void Camera::UpdateVectors() noexcept {
 	DirectX::XMVECTOR tmp = DirectX::XMVector4Transform(DirectX::XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f), m_camOrientation);
@@ -17,6 +24,21 @@ void Camera::UpdateVectors() noexcept {
 	tmp = DirectX::XMVector4Transform(DirectX::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f), m_camOrientation);
 	m_forward = GraphicsFundament::Vector3D(DirectX::XMVectorGetX(tmp), DirectX::XMVectorGetY(tmp), DirectX::XMVectorGetZ(tmp));
 }
+
+
+GraphicsFundament::Vector3D Camera::GetRight() const noexcept {
+	return m_right;
+}
+
+GraphicsFundament::Vector3D Camera::GetUp() const noexcept {
+	return m_up;
+}
+
+GraphicsFundament::Vector3D Camera::GetForward() const noexcept {
+	return m_forward;
+}
+
+
 void Camera::SetCameraFPSRotation(float x, float y, float z) noexcept {
 	m_camOrientation = DirectX::XMMatrixRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), z);
 	m_camOrientation *= DirectX::XMMatrixRotationAxis(DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), x);
@@ -28,7 +50,19 @@ void Camera::SetCameraFPSRotation(float x, float y, float z) noexcept {
 		0.0f)
 		;
 	m_view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(m_position.x, m_position.y, m_position.z, 1.0f), lookTarget, DirectX::XMVectorSet(m_up.x, m_up.y, m_up.z, 1.0f));
+
+	m_testVert_Buf0.projection = m_projection;
+	m_testVert_Buf0.view = m_view;
+	Graphics::UpdateConstBuffer(m_pTestVert_Buf0, &m_testVert_Buf0, sizeof(Camera::TestVert_Buf0));
 }
+
 void Camera::TranslatePosition(float a, GraphicsFundament::Vector3D& direction) noexcept {
 	m_position += (direction * a);
+}
+
+
+void Camera::Bind(VertexShaderName shader) noexcept {
+	if (shader == VertexShaderName::TestVert) {
+		Graphics::GetDeviceContext()->VSSetConstantBuffers(0u, 1u, m_pTestVert_Buf0.GetAddressOf());
+	}
 }

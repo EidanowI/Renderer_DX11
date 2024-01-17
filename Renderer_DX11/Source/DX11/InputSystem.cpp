@@ -1,7 +1,5 @@
-#include "../../Headers/DX11_Base.h"
-
-
-
+#include "../../Headers/InputSystem.h"
+#include "../../Headers/Window.h"
 
 extern float cameraXRotation;
 extern float cameraYRotation;

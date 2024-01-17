@@ -1,4 +1,6 @@
-#include "../../Headers/DX11_Base.h"
+#include "../../Headers/Graphics.h"
+#include "../../Headers/Window.h"
+#include "../../Headers/Camera.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -41,7 +43,6 @@ void Graphics::GetDevices(const std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>
 		adapterInfos[i] = {desc.DeviceId,  std::wstring(desc.Description), score};
 	}
 }
-
 IDXGIAdapter* Graphics::GetMostPowerfulAdapter(const std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters, Graphics::GraphicAdapterInfo* adapterInfos) noexcept {
 	int bestScore = 0;
 	int bestScoreId = 0;
@@ -77,7 +78,6 @@ IDXGIAdapter* Graphics::GetMostPowerfulAdapter(const std::vector<Microsoft::WRL:
 	Window::S_CreateWindowParams.deviceID = desc.DeviceId;
 	return adapters[bestScoreId].Get();
 }
-
 IDXGIAdapter* Graphics::GetAdapterByID(const std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters) noexcept {
 	DXGI_ADAPTER_DESC desc{};
 	for (int i = 0; i < adapters.size(); i++) {
@@ -89,7 +89,6 @@ IDXGIAdapter* Graphics::GetAdapterByID(const std::vector<Microsoft::WRL::ComPtr<
 
 	}
 }
-
 
 void Graphics::Initialize(HWND hWnd, const void* pWindow) noexcept {
 	if (S_pWindow != nullptr) return;
@@ -220,7 +219,6 @@ void Graphics::Initialize(HWND hWnd, const void* pWindow) noexcept {
 		pDevice1->Release();
 	}*/
 }
-
 void Graphics::UnInitialize() noexcept {
 	if (S_pWindow == nullptr) return;
 
@@ -258,11 +256,16 @@ void Graphics::UnInitialize() noexcept {
 
 }
 
+ID3D11Device* Graphics::GetDevice() noexcept {
+	return S_pDevice;
+}
+ID3D11DeviceContext* Graphics::GetDeviceContext() noexcept {
+	return S_pDeviceContext;
+}
 
 void Graphics::SetRenderTargets() noexcept {
 	S_pDeviceContext->OMSetRenderTargets(1u, &S_pRenderTargetView, S_pDepthStencilView);//sprecify stensilDepth
 }
-
 void Graphics::SetupViewPort() noexcept {
 	D3D11_VIEWPORT viewPort{};
 	{
@@ -275,13 +278,49 @@ void Graphics::SetupViewPort() noexcept {
 	}
 	S_pDeviceContext->RSSetViewports(1, &viewPort);//WE need a viewport for rasterization
 }
-
 void Graphics::ClearRenderTarget() noexcept {
 	const float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	S_pDeviceContext->ClearRenderTargetView(S_pRenderTargetView, color);
 	S_pDeviceContext->ClearDepthStencilView(S_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0.0f);
 }
-
 void Graphics::PresentRenderTargets() noexcept {
 	ERROR_PRESENT(S_pSwapChain->Present(1u, 0u));
+}
+
+void Graphics::AddCameraAndSetActive(const Camera& camera) noexcept {
+	S_activeCameraIndex = S_cameras.size();
+	S_cameras.push_back(camera);
+}
+Camera& Graphics::GetActiveCamera() noexcept {
+	return S_cameras[S_activeCameraIndex];
+}
+
+ID3D11Buffer* Graphics::CreateConstBuffer(const char* pConstBufferStruct, unsigned int sizeOfStruct) noexcept {
+	ID3D11Buffer* pConstBuffer;
+
+	D3D11_BUFFER_DESC constBuffDesc{};
+	{
+		constBuffDesc.ByteWidth = sizeOfStruct;
+		constBuffDesc.Usage = D3D11_USAGE_DYNAMIC;// D3D11_USAGE_IMMUTABLE can gives more fps
+		constBuffDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;//
+		constBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		constBuffDesc.MiscFlags = 0u;// miscellaneous
+		constBuffDesc.StructureByteStride = 0u;
+	}
+
+	D3D11_SUBRESOURCE_DATA constBuffSubResData{};
+	{
+		constBuffSubResData.pSysMem = pConstBufferStruct;
+	}
+
+	ID3D11Device* device = Graphics::GetDevice();
+	Graphics::GetDevice()->CreateBuffer(&constBuffDesc, &constBuffSubResData, &pConstBuffer);
+
+	return pConstBuffer;
+}
+void Graphics::UpdateConstBuffer(const Microsoft::WRL::ComPtr<ID3D11Buffer>& pConstBuff, void* pConstBufferStruct, int sizeOfStruct) noexcept {
+	D3D11_MAPPED_SUBRESOURCE constBuffMappedSRes;
+	Graphics::GetDeviceContext()->Map(pConstBuff.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &constBuffMappedSRes);
+	memcpy(constBuffMappedSRes.pData, pConstBufferStruct, sizeOfStruct);
+	Graphics::GetDeviceContext()->Unmap(pConstBuff.Get(), 0u);
 }
