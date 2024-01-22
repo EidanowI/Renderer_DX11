@@ -1,10 +1,6 @@
 #include "../../Headers/InputSystem.h"
 #include "../../Headers/Window.h"
 
-extern float cameraXRotation;
-extern float cameraYRotation;
-extern float cameraZRotation;
-
 void EMPTYFUNC() noexcept {};
 void EMPTYFUNC(LPARAM lParam) noexcept {};
 void EMPTYFUNC(WPARAM wParam, LPARAM lParam) noexcept {};
@@ -12,8 +8,6 @@ void EMPTYFUNC(WPARAM wParam, int x, int y) noexcept {};
 void EMPTYFUNC(int x, int y) noexcept {};
 void STANDART_MOVE(int x, int y) noexcept
 {
-	//InputSystem::S_cursorDeltaX = x - InputSystem::S_currentCursorPosX;
-	//InputSystem::S_cursorDeltaY = y - InputSystem::S_currentCursorPosY;
 	InputSystem::S_currentCursorPosX = x;
 	InputSystem::S_currentCursorPosY = y;
 }
@@ -109,6 +103,11 @@ int InputSystem::Initialize() noexcept {
 	S_pFunction_OnCursorLeaveCA = EMPTYFUNC;
 
 	S_ppFunction_ONCE_KEY[VK_ESCAPE] = STANDART_ESCAPE;
+
+	InputSystem::S_isCursorEnable = false;
+	Window::DisableCursor();
+	Window::FixateCursor();
+	ImGUIManager::DisableImGuiMouse();
 
 	return SUCKSEX;
 }

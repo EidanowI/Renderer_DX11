@@ -11,35 +11,23 @@
 #include "Headers/Camera.h"
 
 
-float cameraXRotation = -0.374;
-float cameraYRotation = 2.726;
-float cameraZRotation = 0;
-
-float cameraPosX = 2.69;
-float cameraPosY = 2.92;
-float cameraPosZ = -5.59;
-
-
-float testRot = 0.0f;
-
-
 void Move_Right(LPARAM lParam) noexcept {
-	Graphics::GetActiveCamera().TranslatePosition(0.04f, Graphics::GetActiveCamera().m_right);
+	Graphics::GetActiveCamera().TranslatePosition(0.09f, Graphics::GetActiveCamera().m_right);
 };
 void Move_Left(LPARAM lParam) noexcept {
-	Graphics::GetActiveCamera().TranslatePosition(-0.04f, Graphics::GetActiveCamera().m_right);
+	Graphics::GetActiveCamera().TranslatePosition(-0.09f, Graphics::GetActiveCamera().m_right);
 };
 void Move_Forward(LPARAM lParam) noexcept {
-	Graphics::GetActiveCamera().TranslatePosition(0.04f, Graphics::GetActiveCamera().m_forward);
+	Graphics::GetActiveCamera().TranslatePosition(0.09f, Graphics::GetActiveCamera().m_forward);
 };
 void Move_Back(LPARAM lParam) noexcept {
-	Graphics::GetActiveCamera().TranslatePosition(-0.04f, Graphics::GetActiveCamera().m_forward);
+	Graphics::GetActiveCamera().TranslatePosition(-0.09f, Graphics::GetActiveCamera().m_forward);
 };
 void Move_Up(LPARAM lParam) noexcept {
-	Graphics::GetActiveCamera().TranslatePosition(0.04f, Graphics::GetActiveCamera().m_up);
+	Graphics::GetActiveCamera().TranslatePosition(0.09f, Graphics::GetActiveCamera().m_up);
 };
 void Move_Down(LPARAM lParam) noexcept {
-	Graphics::GetActiveCamera().TranslatePosition(-0.04f, Graphics::GetActiveCamera().m_up);
+	Graphics::GetActiveCamera().TranslatePosition(-0.09f, Graphics::GetActiveCamera().m_up);
 };
 
 
@@ -97,7 +85,7 @@ private:
 			ImGUIManager::NewFrame();
 			ImGUIManager::ShowGUIWindows();
 
-			Graphics::GetActiveCamera().SetCameraFPSRotation(cameraXRotation, cameraYRotation, cameraZRotation);
+			Graphics::GetActiveCamera().UpdateFpsRotation();
 			Graphics::GetActiveCamera().Bind(Camera::VertexShaderName::TestVert);
 
 			testScene.UpdateViewInf();
@@ -105,7 +93,6 @@ private:
 
 			testSampler.Bind();
 			testFredy.Bind();
-			testMeshed.SetRotation(GraphicsFundament::Vector3D(0.0f, testRot, 0.0f));
 			testMeshed.Draw();
 
 			
@@ -121,18 +108,6 @@ private:
 				ImGui::InputFloat("Quadratic", &testScene.GetPointLight(i)->m_quadratic);
 				ImGui::End();
 			}
-
-			ImGui::Begin("Camera");
-			ImGui::SliderFloat("Camear rotation X: ", &cameraXRotation, -3.1415f, 3.1415f);
-			ImGui::SliderFloat("Camear rotation Y: ", &cameraYRotation, -3.1415f, 3.1415f);
-			ImGui::SliderFloat("Camear rotation Z: ", &cameraZRotation, -3.1415f, 3.1415f);
-			ImGui::SliderFloat("Camear position X: ", &cameraPosX, -10, 10);
-			ImGui::SliderFloat("Camear position Y: ", &cameraPosY, -10, 10);
-			ImGui::SliderFloat("Camear position Z: ", &cameraPosZ, -10, 10);
-			ImGui::End();
-
-
-			testRot += 0.03f;
 
 			//ImGui::ShowDemoWindow();
 			ImGUIManager::Render();

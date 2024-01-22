@@ -44,6 +44,9 @@ class Window {
 		HINSTANCE m_hInst;
 	};
 
+private:
+	void InitializeRawDevices() noexcept;
+
 public:
 	Window(unsigned int width, unsigned int height, const wchar_t* windowName) noexcept;
 	~Window() noexcept;

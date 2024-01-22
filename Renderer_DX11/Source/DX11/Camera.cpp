@@ -66,3 +66,10 @@ void Camera::Bind(VertexShaderName shader) noexcept {
 		Graphics::GetDeviceContext()->VSSetConstantBuffers(0u, 1u, m_pTestVert_Buf0.GetAddressOf());
 	}
 }
+
+void Camera::UpdateFpsRotation() noexcept {
+	m_xRotation -= (float)InputSystem::S_cursorDeltaY / SENSITIVITY_Y;
+	m_xRotation = GraphicsFundament::Clamp(DOWN_LOOK_LIMIT, UP_LOOK_LIMIT, m_xRotation);
+	m_yRotation += (float)InputSystem::S_cursorDeltaX / SENSITIVITY_X;
+	SetCameraFPSRotation(m_xRotation, m_yRotation, m_zRotation);
+}
